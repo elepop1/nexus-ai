@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - MIMO_API_BASE=https://api.pina.my.id/v1
+      - MIMO_API_KEY=${MIMO_API_KEY}
+      - MIMO_MODEL=mimo-v2.5-pro
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./backend/sessions:/app/sessions
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+    depends_on:
+      - backend
